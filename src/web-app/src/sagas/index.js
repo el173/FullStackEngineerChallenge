@@ -1,9 +1,11 @@
 import { all } from 'redux-saga/effects';
 
-import { checkLoginSaga } from './login';
+import { 
+  checkLoginSaga,
+  logOutSaga,
+} from './login';
 
 import { 
-  changeNavigationSaga,
   showLoadingSpinnerSaga,
   hideLoadingSpinnerSaga,
 } from './common';
@@ -11,8 +13,8 @@ import {
 export default function* root() {
   yield all([
     checkLoginSaga(),
-    changeNavigationSaga(),
     showLoadingSpinnerSaga(),
     hideLoadingSpinnerSaga(),
+    logOutSaga(),
   ]);
 }

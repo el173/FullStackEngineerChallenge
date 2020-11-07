@@ -1,21 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-  Switch,
-  Route,
-  HashRouter,
-} from 'react-router-dom';
 
 import {
  LoginScreen,
- NotFoundScreen,
- HomeScreen,
+ MainContainer,
 } from './layout';
 
 import { LoadingSpinner } from '../components';
 
-import NavigationHandler from '../lib/navigation-handler';
 
 function Main(props) {
   const { user } = props;
@@ -31,19 +24,7 @@ function Main(props) {
       {
         loggedUser && loggedUser.logged
         ? (
-          <HashRouter>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={
-                () => <HomeScreen />
-              }
-              />
-              <Route component={NotFoundScreen} />
-            </Switch>
-            <NavigationHandler />
-          </HashRouter>
+          <MainContainer />
         ) 
         : (
           <LoginScreen />

@@ -1,21 +1,12 @@
 import { takeEvery, put } from 'redux-saga/effects';
 
 import {
-  CHANGE_NAVIGATION,
-  CHANGE_NAVIGATION_OK,
   HIDE_LOADING_SPINNER,
   HIDE_LOADING_SPINNER_OK,
   SHOW_LOADING_SPINNER,
   SHOW_LOADING_SPINNER_OK,
 } from '../action-types';
 
-const changeNavigation = function* ({ payload }) {
-  yield put({ type: CHANGE_NAVIGATION_OK, payload });
-};
-  
-export function* changeNavigationSaga() {
-  yield takeEvery(CHANGE_NAVIGATION, changeNavigation);
-}
 
 const hideLoadingSpinner = function* ({ payload }) {
   const config = {
