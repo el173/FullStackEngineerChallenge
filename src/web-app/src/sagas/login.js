@@ -6,7 +6,14 @@ import {
 } from '../action-types';
 
 const checkLogin = function* ({ payload }) {
-  yield put({ type: CHECK_LOGIN_OK, payload });
+  alert(JSON.stringify(payload));
+  const user = {
+    logged: true,
+    userName: 'abc',
+    userType: 'admin'
+  };
+  window.sessionStorage.setItem('user', JSON.stringify(user));
+  yield put({ type: CHECK_LOGIN_OK, payload: user });
 };
     
 export function* checkLoginSaga() {

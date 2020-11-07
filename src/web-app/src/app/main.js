@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import {
   Switch,
   Route,
@@ -9,34 +10,56 @@ import {
 import {
  LoginScreen,
  NotFoundScreen,
+ HomeScreen,
 } from './layout';
 
-function Main() {
-  const isLoggedIn = false;
+import { LoadingSpinner } from '../components';
+
+import NavigationHandler from '../lib/navigation-handler';
+
+function Main(props) {
+  const { user } = props;
+  const loggedUserObj = window.sessionStorage.getItem("user");
+  const [loggedUser, setLoggedUser] = useState(loggedUserObj ? JSON.parse(loggedUserObj) : null);
+
+  useEffect(() => {
+    setLoggedUser(loggedUserObj ? JSON.parse(loggedUserObj) : null);
+  }, [user]);
+
   return (
     <div>
       {
-        isLoggedIn 
+        loggedUser && loggedUser.logged
         ? (
           <HashRouter>
             <Switch>
               <Route
                 exact
-                path="/mobile-hybrid-datapack"
+                path="/"
                 render={
-                () => <LoginScreen />
+                () => <HomeScreen />
               }
               />
               <Route component={NotFoundScreen} />
             </Switch>
+            <NavigationHandler />
           </HashRouter>
         ) 
         : (
           <LoginScreen />
         )
       }
+      <LoadingSpinner />
     </div>
   );
 }
 
-export default Main;
+const mapStateToProps = (state) => ({
+  user: state.login.loggedUser,
+});
+
+export default connect(
+  mapStateToProps,
+  null,
+)(Main);
+
