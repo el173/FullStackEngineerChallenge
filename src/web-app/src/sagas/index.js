@@ -14,7 +14,8 @@ import {
 } from './common';
 
 import {
-  getAllEmployeeSaga
+  getAllEmployeeSaga,
+  assignReviewerSaga,
 } from './employee';
 
 export default function* root() {
@@ -27,5 +28,6 @@ export default function* root() {
     addUserSaga(),
     updateUserSaga(),
     deleteUserSaga(),
+    assignReviewerSaga(),
   ]);
 }

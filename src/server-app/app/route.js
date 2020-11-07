@@ -8,7 +8,9 @@ const {
   getAllEmployees,
   addUser,
   updateUser,
-  changeUserStatus
+  changeUserStatus,
+  getEmpOnly,
+  addReviewer,
 } = require('./actions');
 
 app.use('*', cors());
@@ -36,6 +38,22 @@ app.post('/checkLogin', function (req, res) {
 
 app.post('/listEmployees', function (req, res) {
   getAllEmployees().then(result => {
+    if(result.length == 0) {
+      res.status(404).send('Not found');
+    } else {
+      res.status(200).send({
+        success: true,
+        data: result,
+      });
+    }
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
+});
+
+app.post('/listEmployeesOnly', function (req, res) {
+  getEmpOnly().then(result => {
     if(result.length == 0) {
       res.status(404).send('Not found');
     } else {
@@ -90,8 +108,15 @@ app.delete('/removeUser', function (req, res) {
   });
 });
 
-app.put('/assignEmployee', function (req, res) {
-  res.send('Hello World');
+app.put('/assignEmployeeReview', function (req, res) {
+  addReviewer(req.body.reviewer, req.body.receiver).then(result => {
+    res.status(200).send({
+      success: true,
+    });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
 });
 
 app.get('/listMyReviews', function (req, res) {

@@ -18,7 +18,6 @@ export const getMenuByUserType = (userType) => {
       menus = [
         { id: 'emp', text: 'Employees' },
         { id: 'rvw', text: 'Reviews' },
-        { id: 'asrvw', text: 'Assign reviews' },
       ];
       break;
     case 'employee':

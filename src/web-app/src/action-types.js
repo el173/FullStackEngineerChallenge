@@ -20,3 +20,6 @@ export const UPDATE_USER_OK = 'UPDATE_USER_OK';
 
 export const DELETE_USER = 'DELETE_USER';
 export const DELETE_USER_OK = 'DELETE_USER_OK';
+
+export const ASSIGN_REVIEWER = 'ASSIGN_REVIEWER'; 
+export const ASSIGN_REVIEWER_OK = 'ASSIGN_REVIEWER_OK'; 

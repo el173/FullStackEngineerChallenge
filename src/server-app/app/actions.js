@@ -47,6 +47,14 @@ module.exports = {
       WHERE u.user_type_id=ut.id`, resolve, reject);
     })
   ),
+  getEmpOnly: () => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`SELECT 
+      u.username, u.id, u.password, u.status, ut.user_type 
+      FROM user u, user_type ut 
+      WHERE u.user_type_id=ut.id AND ut.user_type='employee' AND u.status=1 `, resolve, reject);
+    })
+  ),
   addUser: (username, password, userType) => (
     new Promise( (resolve, reject) => {
       executeQuery(`INSERT INTO user
@@ -66,6 +74,12 @@ module.exports = {
       executeQuery(`UPDATE user
       SET status='2'
       WHERE id=${userId}`, resolve, reject);
+    })
+  ),
+  addReviewer: (reviewer, receiver) => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`INSERT INTO user_has_reviews 
+      (giver_id, receiver_id) VALUES(${reviewer}, ${receiver}) `, resolve, reject);
     })
   ),
 };

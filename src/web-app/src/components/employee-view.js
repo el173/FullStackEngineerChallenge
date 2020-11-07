@@ -66,7 +66,6 @@ function EmployeeView(props) {
   
   let userNameInput = useRef();
   let passwordInput = useRef();
-  let userTypeInput = useRef();
 
   useEffect(() => {
     props.getEmpList();
@@ -178,14 +177,11 @@ function EmployeeView(props) {
           required 
           inputRef={passwordInput}
         />
-        <InputLabel id="demo-simple-select-filled-label">User type</InputLabel>
+        <InputLabel>User type</InputLabel>
         <Select
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled"
           value={userType}
           fullWidth
           onChange={handleChange}
-          ref={userTypeInput}
         >
           <MenuItem value={'admin'}>Admin</MenuItem>
           <MenuItem value={'employee'}>Employee</MenuItem>
