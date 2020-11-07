@@ -1,29 +1,48 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const {
   checkLogin,
   getAllEmployees,
+  addUser,
+  updateUser,
+  changeUserStatus
 } = require('./actions');
 
+app.use('*', cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.post('/checkLogin', function (req, res) {
-  checkLogin('sam@mail.com', '1213456').then(result => {
+  checkLogin(req.body.username, req.body.password).then(result => {
     if(result.length == 0) {
       res.status(404).send('Not found');
     } else {
-      res.status(200).send(result);
+      const response = {
+        id: result[0].id,
+        userName: result[0].username,
+        userType: result[0].user_type,
+      };
+      res.status(200).send({
+        success: true,
+        data: response,
+      });
     }
   }).catch(err => {
     res.status(500).send('Internal server error');
   });
 });
 
-app.get('/listEmployees', function (req, res) {
+app.post('/listEmployees', function (req, res) {
   getAllEmployees().then(result => {
     if(result.length == 0) {
       res.status(404).send('Not found');
     } else {
-      res.status(200).send(result);
+      res.status(200).send({
+        success: true,
+        data: result,
+      });
     }
   }).catch(err => {
     console.log(err);
@@ -31,12 +50,44 @@ app.get('/listEmployees', function (req, res) {
   });
 });
 
-app.put('/addEmployee', function (req, res) {
-  res.send('Hello World');
+app.put('/addUser', function (req, res) {
+  addUser(req.body.username, req.body.password, req.body.userType).then(result => {
+    res.status(200).send({
+      success: true,
+    });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
 });
 
-app.delete('/removeEmployee', function (req, res) {
-  res.send('Hello World');
+app.put('/updateUser', function (req, res) {
+  updateUser(
+    req.body.userId,
+    req.body.username, 
+    req.body.password, 
+    req.body.userType,
+  ).then(result => {
+    res.status(200).send({
+      success: true,
+    });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
+});
+
+app.delete('/removeUser', function (req, res) {
+  changeUserStatus(
+    req.body.userId,
+  ).then(result => {
+    res.status(200).send({
+      success: true,
+    });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
 });
 
 app.put('/assignEmployee', function (req, res) {

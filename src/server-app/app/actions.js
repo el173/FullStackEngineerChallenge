@@ -27,12 +27,45 @@ function executeQuery (query, callback, fallback) {
 module.exports = {
   checkLogin: (userName, password) => (
     new Promise( (resolve, reject) => {
-      executeQuery(`SELECT * FROM user WHERE username='${userName}' AND password='${password}'`, resolve, reject);
+      executeQuery(`SELECT u.username, u.user_type_id, ut.user_type FROM user u, user_type ut  
+        WHERE 
+          u.username='${userName}' 
+        AND 
+          u.password='${password}' 
+        AND 
+          u.status=1 
+        AND ut.id=u.user_type_id`, 
+        resolve, reject
+      );
     })
   ),
   getAllEmployees: () => (
     new Promise( (resolve, reject) => {
-      executeQuery(`SELECT * FROM user WHERE user_type_id=(SELECT id FROM user_type WHERE user_type='admin')`, resolve, reject);
+      executeQuery(`SELECT 
+      u.username, u.id, u.password, u.status, ut.user_type 
+      FROM user u, user_type ut 
+      WHERE u.user_type_id=ut.id`, resolve, reject);
+    })
+  ),
+  addUser: (username, password, userType) => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`INSERT INTO user
+      (username, password, status, user_type_id)
+      VALUES('${username}', '${password}', 1, ${userType})`, resolve, reject);
+    })
+  ),
+  updateUser: (userId, username, password, userType) => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`UPDATE user
+      SET username='${username}', password='${password}', user_type_id=${userType}
+      WHERE id=${userId}`, resolve, reject);
+    })
+  ),
+  changeUserStatus: (userId) => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`UPDATE user
+      SET status='2'
+      WHERE id=${userId}`, resolve, reject);
     })
   ),
 };
