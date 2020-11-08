@@ -16,6 +16,8 @@ import {
 import {
   getAllEmployeeSaga,
   assignReviewerSaga,
+  getAllReviewsSaga,
+  updateReviewSaga,
 } from './employee';
 
 export default function* root() {
@@ -29,5 +31,7 @@ export default function* root() {
     updateUserSaga(),
     deleteUserSaga(),
     assignReviewerSaga(),
+    getAllReviewsSaga(),
+    updateReviewSaga(),
   ]);
 }

@@ -14,12 +14,15 @@ export const GET_EMP_LIST_OK = 'GET_EMP_LIST_OK';
 
 export const ADD_USER = 'ADD_USER';
 export const ADD_USER_OK = 'ADD_USER_OK';
-
 export const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_USER_OK = 'UPDATE_USER_OK';
-
 export const DELETE_USER = 'DELETE_USER';
 export const DELETE_USER_OK = 'DELETE_USER_OK';
 
 export const ASSIGN_REVIEWER = 'ASSIGN_REVIEWER'; 
 export const ASSIGN_REVIEWER_OK = 'ASSIGN_REVIEWER_OK'; 
+
+export const GET_ALL_REVIEWS = 'GET_ALL_REVIEWS';
+export const GET_ALL_REVIEWS_OK = 'GET_ALL_REVIEWS_OK';
+export const UPDATE_REVIEW = 'UPDATE_REVIEW';
+export const UPDATE_REVIEW_OK = 'UPDATE_REVIEW_OK';

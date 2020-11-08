@@ -29,6 +29,7 @@ const checkLogin = function* ({ payload }) {
     if(response.success) {
       const user = {
         logged: true,
+        id: response.data.id,
         userName: response.data.userName,
         userType: response.data.userType,
       };

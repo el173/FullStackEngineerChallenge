@@ -11,6 +11,8 @@ const {
   changeUserStatus,
   getEmpOnly,
   addReviewer,
+  listEmpReviews,
+  updateFeedback,
 } = require('./actions');
 
 app.use('*', cors());
@@ -119,8 +121,36 @@ app.put('/assignEmployeeReview', function (req, res) {
   });
 });
 
-app.get('/listMyReviews', function (req, res) {
-  res.send('Hello World');
+app.post('/listEmpReviews', function (req, res) {
+  listEmpReviews().then(result => {
+    if(result.length == 0) {
+      res.status(404).send('Not found');
+    } else {
+      res.status(200).send({
+        success: true,
+        data: result,
+      });
+    }
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
+});
+
+app.put('/updateReview', function (req, res) {
+  updateFeedback(
+    req.body.feedback,
+    req.body.feedbackId, 
+    req.body.byAdmin, 
+    req.body.adminId,
+  ).then(result => {
+    res.status(200).send({
+      success: true,
+    });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
 });
 
 module.exports = app;

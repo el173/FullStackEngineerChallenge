@@ -27,7 +27,7 @@ function executeQuery (query, callback, fallback) {
 module.exports = {
   checkLogin: (userName, password) => (
     new Promise( (resolve, reject) => {
-      executeQuery(`SELECT u.username, u.user_type_id, ut.user_type FROM user u, user_type ut  
+      executeQuery(`SELECT u.username, u.user_type_id, ut.user_type, u.id FROM user u, user_type ut  
         WHERE 
           u.username='${userName}' 
         AND 
@@ -80,6 +80,24 @@ module.exports = {
     new Promise( (resolve, reject) => {
       executeQuery(`INSERT INTO user_has_reviews 
       (giver_id, receiver_id) VALUES(${reviewer}, ${receiver}) `, resolve, reject);
+    })
+  ),
+  listEmpReviews: () => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`SELECT uhr.id, uhr.date, uhr.feedback, 
+      (SELECT username FROM user WHERE id = uhr.giver_id) AS giver,
+      (SELECT username FROM user WHERE id = uhr.receiver_id) AS receiver,
+      (SELECT username FROM user WHERE id = uhr.modified_user_id) AS modifier
+      FROM user_has_reviews uhr`, resolve, reject);
+    })
+  ),
+  updateFeedback: (feedback, feedbackId, byAdmin, adminId) => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`UPDATE user_has_reviews 
+      SET feedback='${feedback}', date=NOW()` 
+      + ( byAdmin ? `, modified_user_id=${adminId}`: ``)
+      + ` WHERE id=${feedbackId}`, 
+      resolve, reject);
     })
   ),
 };
