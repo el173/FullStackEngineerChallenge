@@ -1,5 +1,8 @@
 const mysql = require('mysql');
 
+/**
+ * Create and return the DB connection
+ */
 const con = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -8,4 +11,4 @@ const con = mysql.createConnection({
   database: process.env.DB_NAME,
 });
   
-  module.exports = con;  
+module.exports = con;  

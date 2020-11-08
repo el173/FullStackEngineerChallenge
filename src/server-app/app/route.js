@@ -13,10 +13,15 @@ const {
   addReviewer,
   listEmpReviews,
   updateFeedback,
+  getMyReview,
 } = require('./actions');
 
 app.use('*', cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+/**
+ * This file include the all API routes
+ */
 
 app.post('/checkLogin', function (req, res) {
   checkLogin(req.body.username, req.body.password).then(result => {
@@ -147,6 +152,25 @@ app.put('/updateReview', function (req, res) {
     res.status(200).send({
       success: true,
     });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
+});
+
+app.post('/getMyReviews', function (req, res) {
+  getMyReview(
+    req.body.reviewer,
+    req.body.id,
+  ).then(result => {
+    if(result.length == 0) {
+      res.status(404).send('Not found');
+    } else {
+      res.status(200).send({
+        success: true,
+        data: result,
+      });
+    }
   }).catch(err => {
     console.log(err);
     res.status(500).send('Internal server error');

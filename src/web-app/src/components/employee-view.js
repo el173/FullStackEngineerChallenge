@@ -23,6 +23,10 @@ import {
   DELETE_USER,
 } from '../action-types';
 
+import {
+  getCurrentUserFromSession
+} from '../lib/utils';
+
 const columns = [
   { id: 'username', label: 'Username', minWidth: 170 },
   { id: 'password', label: 'Password', minWidth: 100 },
@@ -73,6 +77,7 @@ function EmployeeView(props) {
 
   useEffect(() => {
     const list = [];
+    const currentUser = getCurrentUserFromSession();
     employeeList &&  employeeList?.employeeList?.length > 0 && employeeList.employeeList.map(item => {
       list.push(
         {
@@ -89,7 +94,7 @@ function EmployeeView(props) {
           delete: <Button 
             variant="outlined" 
             color="secondary" 
-            disabled={item.status !== 1} 
+            disabled={item.status !== 1 || item.id === currentUser.id} 
             onClick={() => deleteUser(item)}
             >DELETE</Button>,
         }

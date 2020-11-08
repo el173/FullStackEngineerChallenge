@@ -3,6 +3,8 @@ import {
     ASSIGN_REVIEWER_OK,
     GET_ALL_REVIEWS_OK,
     UPDATE_REVIEW_OK,
+    GET_MY_REVIEW_OK,
+    GET_ASSIGNED_REVIEWS_OK,
   } from '../action-types';
   
   export default (state = { fetching: false }, action) => {
@@ -26,6 +28,16 @@ import {
         return {
           ...state,
           reviewUpdated: action.payload,
+        };
+      case GET_MY_REVIEW_OK:
+        return {
+          ...state,
+          myReviewList: action.payload,
+        };
+      case GET_ASSIGNED_REVIEWS_OK:
+        return {
+          ...state,
+          assignedReview: action.payload,
         };  
       default:
         return state;

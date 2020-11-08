@@ -7,10 +7,18 @@ import {
   API_BASE
 } from '../settings';
 
+/**
+ * by calling this function could show/hide main loading spinner
+ * @param {bool} status 
+ */
 export const showLoadingSpinner = (status = true) => {
   global.store.dispatch({ type: status ? SHOW_LOADING_SPINNER : HIDE_LOADING_SPINNER });
 };
 
+/**
+ * Get available menu list for user type
+ * @param {string} userType 
+ */
 export const getMenuByUserType = (userType) => {
   let menus = [];
   switch (userType) {
@@ -31,10 +39,18 @@ export const getMenuByUserType = (userType) => {
   return menus;
 };
 
+/**
+ * Get actual API endpoint
+ * @param {string} endPoint 
+ */
 export const createUrl = (endPoint) => {
   return `${API_BASE}/${endPoint}`
 };
 
+/**
+ * Format parameters as url encoded params 
+ * @param {JSON} params 
+ */
 export const createParams = params => {
   let formBody = [];
   for (let property in params) {
@@ -46,7 +62,13 @@ export const createParams = params => {
   return formBody;
 };
 
- export const makeNetworkRequest = async (url, method = 'GET', params = {}) => {
+/**
+ * Common function to execute all the network calls
+ * @param {string} url 
+ * @param {string} method 
+ * @param {JSON} params 
+ */
+export const makeNetworkRequest = async (url, method = 'GET', params = {}) => {
   try {
     showLoadingSpinner(true);
     const response = await fetch(url, {
@@ -75,4 +97,12 @@ export const createParams = params => {
       success: false,
     }
   }
+}
+
+/**
+ * Get user object from browser session
+ */
+export const getCurrentUserFromSession = () => {
+  let loggedUserObj = window.sessionStorage.getItem("user");
+  return loggedUserObj ? JSON.parse(loggedUserObj) : null;
 }

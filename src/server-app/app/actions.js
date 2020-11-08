@@ -1,5 +1,11 @@
 const con = require('../lib/db-utils');
 
+/**
+ * This function will execute the query as a promise
+ * @param {*} query 
+ * @param {*} callback 
+ * @param {*} fallback 
+ */
 function executeQuery (query, callback, fallback) {
   const executer = (command, resolve, reject) => {
     con.query(query, function (err, result, fields) {
@@ -11,6 +17,7 @@ function executeQuery (query, callback, fallback) {
     });
   };
 
+  // Check the DB connectivity and create new connection if not exists
   if(con.state === 'disconnected'){
     con.connect(function(err) {
       if (err) {
@@ -98,6 +105,15 @@ module.exports = {
       + ( byAdmin ? `, modified_user_id=${adminId}`: ``)
       + ` WHERE id=${feedbackId}`, 
       resolve, reject);
+    })
+  ),
+  getMyReview: (reviewer, id) => (
+    new Promise( (resolve, reject) => {
+      executeQuery(`SELECT uhr.id, uhr.date, uhr.feedback, 
+      (SELECT username FROM user WHERE id = uhr.giver_id) AS giver,
+      (SELECT username FROM user WHERE id = uhr.receiver_id) AS receiver,
+      (SELECT username FROM user WHERE id = uhr.modified_user_id) AS modifier
+      FROM user_has_reviews uhr WHERE ${reviewer ? `uhr.giver_id=${id}`: `uhr.receiver_id=${id}`}`, resolve, reject);
     })
   ),
 };
