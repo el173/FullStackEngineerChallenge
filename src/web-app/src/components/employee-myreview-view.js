@@ -108,7 +108,7 @@ function MyReviewView(props) {
   const showFeedbackInput = (item) => {
     const feedback = prompt('Enter your feedback');
     if(feedback !== null) {
-      if(feedback.trim() == '') {
+      if(feedback.trim() === '') {
         alert('Enter valid feedback');
       } else {
         props.updateReview({
